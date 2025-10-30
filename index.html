@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sorry Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        #message {
+            font-size: 3em;
+            color: #cc0000; /* Red color for 'Sorry' */
+            margin-bottom: 20px;
+        }
+
+        .sorry-link {
+            font-size: 1.5em;
+            color: #007bff; /* Blue link color */
+            cursor: pointer;
+            text-decoration: underline;
+            margin: 10px 0;
+        }
+
+        /* Styling to prevent the link from looking "visited" */
+        .sorry-link:visited {
+             color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="message">Tap a link to see "Sorry"!</div>
+
+    <a href="#" class="sorry-link" id="link1">Tap Me (Link 1)</a>
+    <a href="#" class="sorry-link" id="link2">Another Link</a>
+    <a href="#" class="sorry-link" id="link3">Try This One</a>
+
+    <script>
+        // Select all elements with the class 'sorry-link'
+        const links = document.querySelectorAll('.sorry-link');
+        
+        // Select the message display area
+        const messageDisplay = document.getElementById('message');
+
+        // Function to run when a link is clicked
+        function displaySorry(event) {
+            // Prevent the default action (like navigating to a new page or reloading)
+            event.preventDefault(); 
+            
+            // Update the message to display "Sorry!"
+            messageDisplay.textContent = "Sorry!"; 
+        }
+
+        // Loop through all the links and attach the displaySorry function to their 'click' event
+        links.forEach(link => {
+            link.addEventListener('click', displaySorry);
+        });
+    </script>
+</body>
+</html>
