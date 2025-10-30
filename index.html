@@ -3,68 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Sorry Page</title>
+    <title>The Cringe Apology</title>
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tone.js for sound effects --><script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            text-align: center;
+        /* Define the Inter font and ensure smooth transitions */
+        body { font-family: 'Inter', sans-serif; }
+        .sorry-toast-show {
+            transform: translateY(0) !important;
         }
-
-        #message {
-            font-size: 3em;
-            color: #cc0000; /* Red color for 'Sorry' */
-            margin-bottom: 20px;
+        /* Custom pulsing animation for extra drama */
+        @keyframes pulse-cringe {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-
-        .sorry-link {
-            font-size: 1.5em;
-            color: #007bff; /* Blue link color */
-            cursor: pointer;
-            text-decoration: underline;
-            margin: 10px 0;
-        }
-
-        /* Styling to prevent the link from looking "visited" */
-        .sorry-link:visited {
-             color: #007bff;
+        .animate-pulse-cringe {
+            animation: pulse-cringe 1.5s ease-in-out infinite;
         }
     </style>
 </head>
-<body>
+<body class="bg-pink-50 text-gray-900 min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div id="message">Tap a link to see "Sorry"!</div>
+    <!-- Main Content Area - Pastel Aesthetic --><!-- This div now holds ONLY the massive, clickable SORRY --><div class="max-w-xl w-full bg-white p-12 rounded-3xl shadow-2xl border-4 border-pink-200 flex flex-col items-center justify-center h-[70vh] md:h-[60vh]">
+        
+        <!-- The BIG interactive "Sorry" text, which now acts as the link/button --><div 
+            id="bigSorryTrigger" 
+            class="sorry-link cursor-pointer p-8 rounded-full bg-pink-100 hover:bg-pink-200 transition duration-300 ease-in-out transform hover:scale-[1.03] active:scale-[0.98] shadow-xl border-4 border-pink-400"
+        >
+            <div class="text-8xl md:text-[10rem] font-extrabold tracking-wider text-center text-red-500 animate-pulse-cringe leading-none">
+                SORRY
+            </div>
+            <!-- Madam ji' in big letters with flowers --><p class="text-center mt-6 text-4xl md:text-5xl font-extrabold text-purple-600 animate-pulse-cringe leading-none">
+                🌸 madam ji' 🌸
+            </p>
+        </div>
 
-    <a href="#" class="sorry-link" id="link1">Tap Me (Link 1)</a>
-    <a href="#" class="sorry-link" id="link2">Another Link</a>
-    <a href="#" class="sorry-link" id="link3">Try This One</a>
+    </div>
+
+    <!-- Sorry Toast Notification (The light pink, cringey message) -->
+    <div id="sorryToast" class="fixed top-0 left-1/2 -translate-x-1/2 mt-12 w-11/12 max-w-sm p-6 bg-pink-200 text-red-800 rounded-xl shadow-2xl transition duration-500 ease-in-out transform -translate-y-full border-4 border-pink-400 z-50">
+        <!-- Combined, flowing apology message -->
+        <div class="text-center">
+            <!-- S O R R Y ! 🥺 part, prominent, using inline-block for flow -->
+            <span class="text-4xl font-black tracking-widest text-red-500 animate-pulse-cringe inline-block">
+                S O R R Y ! 🥺
+            </span>
+            <br>
+            <!-- I am sorry for being rude... part -->
+            <span class="text-lg font-semibold text-red-800 inline-block mt-2">
+                I am sorry for being rude 😭😭🙏
+            </span>
+        </div>
+    </div>
 
     <script>
-        // Select all elements with the class 'sorry-link'
+        // Selects the single element with the class 'sorry-link' (which is the big SORRY text)
         const links = document.querySelectorAll('.sorry-link');
+        const sorryToast = document.getElementById('sorryToast');
         
-        // Select the message display area
-        const messageDisplay = document.getElementById('message');
+        // Initialize a thin, high-pitched synth for a "pathetic" sound effect
+        const synth = new Tone.FMSynth({
+            harmonicity: 3.9,
+            modulationIndex: 10,
+            envelope: { attack: 0.01, decay: 0.1, sustain: 0.0, release: 0.2 },
+            modulation: { type: "sine" }
+        }).toDestination();
 
-        // Function to run when a link is clicked
-        function displaySorry(event) {
-            // Prevent the default action (like navigating to a new page or reloading)
+        // The sequence that runs on every link click/tap
+        function showSorry(event) {
+            // 1. Prevent navigation (though there is no link, this prevents cursor issues)
             event.preventDefault(); 
             
-            // Update the message to display "Sorry!"
-            messageDisplay.textContent = "Sorry!"; 
+            // 2. Play the sound (High, short pitch for a "squeaky" apology)
+            Tone.start();
+            synth.triggerAttackRelease("G5", "16n");
+
+            // 3. Show the toast with a slide-down effect
+            sorryToast.classList.add('sorry-toast-show');
+            
+            // 4. Hide the toast after 1.5 seconds (giving enough time to read the lengthy apology)
+            setTimeout(() => {
+                sorryToast.classList.remove('sorry-toast-show');
+            }, 1500); 
         }
 
-        // Loop through all the links and attach the displaySorry function to their 'click' event
+        // Attach the event listener to the single clickable SORRY element
         links.forEach(link => {
-            link.addEventListener('click', displaySorry);
+            link.addEventListener('click', showSorry);
         });
+
     </script>
 </body>
 </html>
